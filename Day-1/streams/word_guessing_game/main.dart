@@ -1,3 +1,6 @@
+// this is a word guessing game that employs the use of streams to implement the game. The user
+// has 4 chances to make a guess and find correct a word that has been hidden in the code.
+
 import 'dart:html';
 
 void main() {
