@@ -19,6 +19,15 @@ class Bloc with Validators {
   Function(String) get changeEmail => _email.sink.add;
   Function(String) get changePassword => _password.sink.add;
 
+  // Submit the form
+  submit() {
+     final validEmail = _email.value;
+     final validPassword = _password.value;
+
+     print('Email is $validEmail');
+     print('Password is $validPassword');
+  }
+
   // Cleaning up controllers
   void dispose() {
     _email.close();
