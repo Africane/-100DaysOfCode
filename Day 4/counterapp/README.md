@@ -2,6 +2,12 @@
 
 A new Flutter project.
 
+-----------------------------
+#### I actually forgot to put the Scaffold into the Material App and had 
+this nasty bug😂
+
+==============================
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
