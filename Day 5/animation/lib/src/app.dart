@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       title: 'Animation',
       theme: ThemeData(
         primarySwatch: Colors.blue),
-      home: Home(),
+      home: const Home(),
     );
   }
 }
