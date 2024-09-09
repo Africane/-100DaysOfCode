@@ -3,15 +3,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'firebase_options.dart';
 
-void main() {
-  runApp( MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    )
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(MaterialApp(
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      useMaterial3: true,
+    ),
+    home: const MyHomePage(title: 'Flutter Demo Home Page'),
+  ));
 }
 
 class MyHomePage extends StatefulWidget {
@@ -38,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _password.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,27 +64,34 @@ class _MyHomePageState extends State<MyHomePage> {
             enableSuggestions: false,
             autocorrect: false,
             controller: _password,
-             decoration: const InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Enter Your Password',
             ),
           ),
           TextButton(
-          onPressed: () async {
-            await Firebase.initializeApp(
-             options: DefaultFirebaseOptions.currentPlatform,
-            );
+            onPressed: () async {
+              final email = _email.text;
+              final password = _password.text;
 
-            final email = _email.text;
-            final password = _password.text;
-
-            final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: email,
-              password: password,
-            );
-            print(userCredential);
-          },
-          child: const Text('Register'),
-        ),
+              try {
+                final userCredential = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                  email: email,
+                  password: password,
+                );
+                print(userCredential);
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'weak-password') {
+                  print('The password provided is too weak.');
+                } else if (e.code == 'email-already-in-use') {
+                  print('The account already exists for that email.');
+                }
+              } catch (e) {
+                print(e);
+              }
+            },
+            child: const Text('Register'),
+          ),
         ],
       ),
     );

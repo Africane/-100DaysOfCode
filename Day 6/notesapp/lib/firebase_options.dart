@@ -71,4 +71,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'ovide-notes.appspot.com',
     iosBundleId: 'com.example.notesapp',
   );
+
 }
