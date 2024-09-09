@@ -45,5 +45,27 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	
+	<!-- Firebase Configuration -->
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/> <!-- Disable automatic app delegate swizzling if necessary -->
+	
+	<!-- Permissions for networking -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	
+	<!-- Permissions for user notifications (if needed for Firebase Messaging) -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+
+	<!-- Firebase Auth requires the device to access secure HTTPS traffic -->
+	<key>NSAllowsArbitraryLoadsInWebContent</key>
+	<true/>
 </dict>
 </plist>
