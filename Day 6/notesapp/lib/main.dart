@@ -11,23 +11,40 @@ void main() {
   );
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required String title});
 
-  // This widget is the root of your application.
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late final TextEditingController _email;
+  late final TextEditingController _password;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
       ),
-      body: Center(
-        child: TextButton(
-          onPressed: () {
+      body: Column(
+        children: [
+          const TextField(),
+          const TextField(),
+          TextButton(
+          onPressed: () async {
             
           },
           child: const Text('Register'),
         ),
+        ],
       ),
     );
   }
