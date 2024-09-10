@@ -8,14 +8,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MaterialApp(
-    theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-    ),
-    home: const MyHomePage(title: 'Flutter Demo Home Page'),
-  ));
+  runApp(const MyHomePage(title: 'Register Page',));
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required String title});
@@ -44,55 +39,57 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-      ),
-      body: Column(
-        children: [
-          TextField(
-            enableSuggestions: false,
-            autocorrect: false,
-            controller: _email,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              hintText: 'Enter Your Email Address',
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Register'),
+        ),
+        body: Column(
+          children: [
+            TextField(
+              enableSuggestions: false,
+              autocorrect: false,
+              controller: _email,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: 'Enter Your Email Address',
+              ),
             ),
-          ),
-          TextField(
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            controller: _password,
-            decoration: const InputDecoration(
-              hintText: 'Enter Your Password',
+            TextField(
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              controller: _password,
+              decoration: const InputDecoration(
+                hintText: 'Enter Your Password',
+              ),
             ),
-          ),
-          TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
-
-              try {
-                final userCredential = await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                  email: email,
-                  password: password,
-                );
-                print(userCredential);
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'weak-password') {
-                  print('The password provided is too weak.');
-                } else if (e.code == 'email-already-in-use') {
-                  print('The account already exists for that email.');
+            TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
+      
+                try {
+                  final userCredential = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                    email: email,
+                    password: password,
+                  );
+                  print(userCredential);
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
+                  print(e);
                 }
-              } catch (e) {
-                print(e);
-              }
-            },
-            child: const Text('Register'),
-          ),
-        ],
+              },
+              child: const Text('Register'),
+            ),
+          ],
+        ),
       ),
     );
   }
