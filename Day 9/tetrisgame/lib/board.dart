@@ -30,6 +30,9 @@ class _GameBoardState extends State<GameBoard> {
   // current tetris piece
   Piece currentPiece = Piece(type: Tetromino.L);
 
+  // current score
+  int currentScore = 0;
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +45,7 @@ class _GameBoardState extends State<GameBoard> {
       currentPiece.initializePiece();
 
       // frame refresh rate
-      Duration frameRate = const Duration(milliseconds: 800);
+      Duration frameRate = const Duration(milliseconds: 400);
       gameLoop(frameRate);
   }
 
@@ -52,6 +55,9 @@ class _GameBoardState extends State<GameBoard> {
       frameRate,
       (timer) {
         setState(() {
+          // clear lines
+          clearLines();
+
           // check landing
           checkLanding();
 
@@ -131,7 +137,7 @@ void createNewPiece() {
   }
 }
 
-// move left button
+// move piece left button
 void moveLeft() {
   // make sure the move is valid before we move there
   if (!checkCollision(Direction.left)) {
@@ -141,7 +147,7 @@ void moveLeft() {
   }
 }
 
-// move right button
+// move piece right button
 void moveRight() {
   // make sure the move is valid before we move there
   if (!checkCollision(Direction.right)) {
@@ -152,7 +158,44 @@ void moveRight() {
 }
 
 // rotate piece button
-void rotatePiece() {}
+void rotatePiece() {
+  setState(() {
+    currentPiece.rotatePiece();
+  });
+}
+
+// clear complete lines
+void clearLines() {
+  // step 1: loop through each row of the game board from bottom to top
+  for (int row = colLength - 1; row >= 0; row--) {
+    // step 2: Initialize a variable to track if the row is full
+    bool rowIsFull = true;
+
+    // step 3: check if the row is full (all columns in the row are filled with pieces)
+    for (int col = 0; col < rowLength; col++) {
+      // if there's an empty column, set rowIsFull to false and break the loop
+      if (gameBoard[row][col] == null) {
+        rowIsFull = false;
+        break;
+      }
+    }
+
+    // step 4: if the row is full, clear the row and shift rows down
+    if (rowIsFull) {
+      // step 5: move all rows above the cleared row down by one position
+      for (int r = row; r > 0; r--) {
+        // copy the above row to the current row
+        gameBoard[r] = List.from(gameBoard[r - 1]);
+
+        // step 6: set the top row to empty
+        gameBoard[0] = List.generate(row, (index) => null);
+
+        // step 7: Increase the score
+        currentScore++;
+      }
+    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -199,9 +242,15 @@ void rotatePiece() {}
             ),
           ),
 
+          // Score count
+          Text(
+            'Score: $currentScore',
+            style: const TextStyle(color: Colors.white),
+          ),
+
           // Game controls
           Padding(
-            padding: const EdgeInsets.only(bottom: 50.0),
+            padding: const EdgeInsets.only(bottom: 50.0, top: 50),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
