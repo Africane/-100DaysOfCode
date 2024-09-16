@@ -77,72 +77,54 @@ class Piece{
 
       // piece L
       case Tetromino.L:
-        switch(rotationState) {
-          case 0:
-          // get the new position
+      switch (rotationState) {
+        case 0:
+          // Rotate to the "up" orientation (L shape up)
           newPosition = [
-            position[1] - rowLength,
-            position[1],
-            position[1] + rowLength,
-            position[1] + rowLength + 1,
+            position[1] - rowLength, // top
+            position[1], // center (pivot)
+            position[1] + rowLength, // bottom
+            position[1] + rowLength + 1, // bottom-right
           ];
-          // check that this new position is a valid move before moving
-          if (piecePositionIsValid(newPosition)) {
-            // update position
-            position = newPosition;
-            // update rotation state
-            rotationState = (rotationState + 1) % 4;
-          }
           break;
 
-          case 1:
-          // assign new position
+        case 1:
+          // Rotate to the "right" orientation (L shape right)
           newPosition = [
-            position[1] - 1,
-            position[1],
-            position[1] + 1,
-            position[1] + rowLength - 1,
+            position[1] - 1, // left
+            position[1], // center (pivot)
+            position[1] + 1, // right
+            position[1] + rowLength - 1, // bottom-left
           ];
-          if (piecePositionIsValid(newPosition)) {
-            // update position
-            position = newPosition;
-            // update rotation state
-            rotationState = (rotationState + 1) % 4;
-          }
           break;
 
-          case 2:
-          // assign new position
+        case 2:
+          // Rotate to the "down" orientation (L shape down)
           newPosition = [
-            position[1] + rowLength,
-            position[1],
-            position[1] - rowLength,
-            position[1] - rowLength - 1,
+            position[1] + rowLength, // bottom
+            position[1], // center (pivot)
+            position[1] - rowLength, // top
+            position[1] - rowLength - 1, // top-left
           ];
-          if (piecePositionIsValid(newPosition)) {
-            // update position
-            position = newPosition;
-            // update rotation state
-            rotationState = (rotationState + 1) % 4;
-          }
           break;
 
-          case 3:
-          // assign new position
+        case 3:
+          // Rotate to the "left" orientation (L shape left)
           newPosition = [
-            position[1] - rowLength + 1,
-            position[1],
-            position[1] + 1,
-            position[1] - 1,
+            position[1] - rowLength + 1, // top-right
+            position[1], // center (pivot)
+            position[1] + 1, // right
+            position[1] - 1, // left
           ];
-          if (piecePositionIsValid(newPosition)) {
-            // update position
-            position = newPosition;
-            // update rotation state
-            rotationState = (rotationState + 1) % 4;
-          }
-        }
-        break;
+          break;
+      }
+
+      // Check if the new position is valid before applying it
+      if (piecePositionIsValid(newPosition)) {
+        position = newPosition; // Apply the new position
+        rotationState = (rotationState + 1) % 4; // Update the rotation state
+      }
+      break;
 
 
       // piece J
